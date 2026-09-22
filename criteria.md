@@ -25,7 +25,7 @@ contains the answer.
 **Why this target:**
 <!-- e.g. "One of my questions is about a topic only two documents mention, so
      I expect that one to be hard." -->
-
+One of my questions asks about walking time in winter, but the relevant chunk gives the summer walking time and says to add 4 minutes for winter. Since answering requires combining these two pieces of information, retrieval may not handle this question correctly, so I chose 4 out of 5 rather than 5 out of 5.
 ---
 
 ## 2. Every answer names a source
@@ -35,7 +35,7 @@ Every answer the system produces names at least one source document.
 **Why this target:**
 <!-- Why all five and not four? What about your setup makes that achievable —
      or what would have to go wrong for it not to be? -->
-
+I chose all five because I created each question based on information in the source documents, so every answer should have at least one source to cite.
 ---
 
 ## 3. The relevance gate stops out-of-corpus questions
