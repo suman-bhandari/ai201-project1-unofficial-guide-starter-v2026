@@ -164,8 +164,11 @@ I chose 0.5 because there was a clear gap between the two groups. The five in-co
      Milestone 5. -->
 
 **1.**
+Relevance cutoff: I asked ChatGPT whether I should use 0.5 or 0.6 as my relevance cutoff based on my five in-corpus and my five out-of-scope distances. It suggested 0.5 because there was a large gap between the groups. I chose 0.5 based on my actual retrieval results rather than keeping the starter value of 0.6.
 
 **2.**
+Retrieval distance: I asked ChatGPT to explain what the retrieval distance means and why some of the top five retrieved chunks were unrelated to my question. It explained that top_k=5 returns the five closest chunks even if some are not actually useful, and that a lower distance indicates greater similarity. This helped me understand that I should check whether the retrieved chunks actually contain relevant information instead of assuming all top-k results are relevant. Then I decided to change top_k to 4.
+
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
