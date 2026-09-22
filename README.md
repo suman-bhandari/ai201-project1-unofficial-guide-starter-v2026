@@ -117,14 +117,19 @@ Laundry costs $1.75 wash, $1.75 dry, app-based. On noise: moderate; the building
      visible. Milestone 4. -->
 
 **Question:**
-
+When does the student permits for the west lots go on sale?
 **Answer:**
 
 ```
+Student permits for the west lots go on sale in August (admin_parking_permits.txt).
+
+Sources retrieved: admin_add_drop_deadline.txt, admin_parking_permits.txt, advising_registration.txt,money_textbooks.txt
 ```
 
 **My relevance cutoff:**
 
+0.5
+I chose 0.5 because there was a clear gap between the two groups. The five in-corpus questions had best distances from 0.1854 to 0.4277, while the five out-of-scope questions had distances from 0.8246 to 0.9340. A cutoff of 0.5 is above all observed in-corpus distances and well below all observed out-of-scope distances.
 <!-- The number you set in config.py, and how you got there.
 
      You ran five questions your corpus covers and the five in OUT_OF_SCOPE
@@ -135,8 +140,17 @@ Laundry costs $1.75 wash, $1.75 dry, app-based. On noise: moderate; the building
      Milestone 4. -->
 
 | Question | In corpus? | Best distance |
-|---|---|---|
-|  |  |  |
+| What is the cost of North Kitchen? | Yes | 0.3013 |
+| Can you study during your dinning job shifts? | Yes | 0.4277 |
+| What is the walking time from Library to Ridgeway Café in winter? | Yes | 0.3793 |
+| Are the exams of ECON 101 Introduction to Economics all multiple choice? | Yes | 0.1854 |
+| When does the student permits for the west lots go on sale? | Yes | 0.2172 |
+| What is the capital of Mongolia? | No | 0.8246 |
+| How do I change the oil in a diesel engine? | No | 0.9340 |
+| Who won the 1994 World Cup? | No | 0.8859 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.8442 |
+| How do I write a for loop in Rust? | No | 0.8960 |
+
 
 ## How I Used AI
 
