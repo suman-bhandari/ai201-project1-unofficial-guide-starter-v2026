@@ -53,9 +53,11 @@ in at least 4 of 5 tries.
 <!-- What did your distances look like when you set the cutoff in Milestone 4?
      Was there a clean gap, or did the two groups overlap? -->
 
+I chose 4 out of 5 because some out-of-corpus questions may still be semantically similar to topics in the campus_life documents, causing the relevance gate to incorrectly accept them.
 ---
 
-## 4. Something about your chunks
+## 4. Chunks contain complete, focused information
+All sampled chunks contain complete sentences and focus on a single topic or closely related information.
 
 <!-- YOU WRITE THIS ONE.
 
@@ -72,13 +74,13 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+The campus_life documents are short, usually only 3–4 lines, so keeping each document as one chunk should preserve complete sentences and a focused topic without splitting useful information.
 
 
 ---
 
-## 5. Your choice
-
+## 5. Source attribution is correct
+For at least 4 of 5 test questions, the answer names the document that contains the information used to answer the question.
 <!-- YOU WRITE THIS ONE TOO.
 
      Pick something you actually care about getting right. It could be about
@@ -90,7 +92,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+Naming a source is only useful if it is the correct source. I chose 4 out of 5 because retrieval may return multiple similar campus_life posts, which could lead to incorrect source attribution.
 
 
 ---
