@@ -195,17 +195,66 @@ Retrieval distance: I asked ChatGPT to explain what the retrieval distance means
 
      Milestone 1. -->
 
-| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
-|---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 | 3/5 | 4/5 | 4/5 | MISSED |
-| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
-| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
-| 4. Chunks contain complete, focused information | All sampled | Pass | Pass | Pass | MET |
-| 5. Source attribution is correct | 4 of 5 | 3/5 | 4/5 | 4/5 | MISSED |
+     | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+     |---|---|---|---|---|---|
+     | 1. Retrieved chunk contains the answer | 4 of 5 | 3/5 | 4/5 | 4/5 | MISSED |
+     | 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+     | 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+     | 4. Chunks contain complete, focused information | All sampled | Pass | Pass | Pass | MET |
+     | 5. Source attribution is correct | 4 of 5 | 3/5 | 4/5 | 4/5 | MISSED |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
      Name the file and function that produced it. -->
+     Produced by run_eval.py::main calling store.py::search (retrieval) and generator.py::generate (answer synthesis) on Run 1:
+
+     ### Criterion 1 & 5: In-Corpus Answer Content & Source Attribution
+
+     ### What is the cost of North Kitchen? — run 1
+     - Best distance: 0.3013 (passed the gate)
+     - Sources retrieved: dining_north_kitchen.txt, dining_north_kitchen_followup.txt, housing_calder_annexe.txt, housing_fenwick_court.txt
+
+     ### Can you study during your dinning job shifts? — run 1
+
+     - Best distance: 0.4277 (passed the gate)
+     - Sources retrieved: admin_campus_jobs_and_financial_aid.txt, admin_meal_plan_changes.txt, money_jobs.txt, study_group_rooms.txt
+
+     ### What is the walking time from Library to Ridgeway Café in winter? — run 1
+
+     - Best distance: 0.3793 (passed the gate)
+     - Sources retrieved: dining_north_kitchen_followup.txt, dining_the_ridgeway_cafe.txt, dining_the_ridgeway_cafe_followup.txt, transit_walking.txt
+
+     ### Are the exams of ECON 101 Introduction to Economics all multiple choice? — run 1
+
+     - Best distance: 0.1854 (passed the gate)
+     - Sources retrieved: course_econ_101.txt, course_econ_101_exams.txt, course_econ_101_workload.txt, course_engl_205_exams.txt
+
+     ### When does the student permits for the west lots go on sale? — run 1
+
+     - Best distance: 0.2172 (passed the gate)
+     - Sources retrieved: admin_add_drop_deadline.txt, admin_parking_permits.txt, advising_registration.txt, money_textbooks.txt
+
+     ### Criterion 2: Every Answer Names a Source
+     Every answer above from `generator.py::generate` appends source file inline citations (e.g., `(dining_north_kitchen.txt)`, `Source: money_jobs.txt`, `(transit_walking.txt)`).
+
+     ### Criterion 3: Relevance Gate on Out-of-Corpus Questions
+     | Out-of-scope question | Best distance | Gate |
+     |---|---|---|
+     | What is the capital of Mongolia? | 0.825 | refused |
+     | How do I change the oil in a diesel engine? | 0.934 | refused |
+     | Who won the 1994 World Cup? | 0.886 | refused |
+     | What is the recommended dosage of ibuprofen for a headache? | 0.844 | refused |
+     | How do I write a for loop in Rust? | 0.896 | refused |
+
+     ### Criterion 4: Chunks Contain Complete, Focused Information
+     *Produced by `chunker.py::split_documents` / `store.py::get_sampled_chunks`.*
+     #### Sample Chunk 1
+     - **Source file:** `dining_north_kitchen.txt`
+     - **Character count:** 214 characters
+     - **Sentence boundary check:** Complete (starts with full sentence, ends with period)
+
+     ```text
+     North Kitchen is open for lunch and dinner daily. Entry costs one meal swipe, or $13.00 cash for guest entry. Dining hall hours are subject to change during university holidays.
 
 ## Verdicts
 
@@ -218,13 +267,21 @@ Retrieval distance: I asked ChatGPT to explain what the retrieval distance means
 
      Milestone 2. -->
 
-| # | Criterion | Verdict | How I decided |
-|---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+     | # | Criterion | Verdict | How I decided |
+     |---|---|---|---|
+     | 1 | Retrieved chunk contains the answer | MISSED | Run 1 scored 3/5, falling below the 4/5 target. Because the target must hold consistently across every evaluation run, this is a miss. |
+
+     | 2 | Every answer names a source | MET | Every generated answer across all 3 runs (5/5 on each run) explicitly included inline source file citations. |
+
+     | 3 | Gate stops out-of-corpus questions | MET | The distance cutoff of 0.5 successfully refused all 5 out-of-corpus questions in every run (5/5 each time). |
+
+     | 4 | Chunks contain complete, focused information | MET | All sampled chunks from chunker.py::split_documents contained full sentences with no mid-sentence truncations and focused on single topics. |
+
+     | 5 | Source attribution is correct | MISSED | Run 1 scored 3/5 due to strict substring matching on citation placement, failing the required 4/5 target despite Runs 2 and 3 passing. |
+
+     ### Criterion Revisions
+     No criteria were revised during this evaluation run.
+     All targets remained as originally specified.
 
 ## Diagnoses
 
