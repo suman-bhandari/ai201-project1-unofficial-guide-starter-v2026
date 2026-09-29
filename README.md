@@ -302,6 +302,23 @@ Retrieval distance: I asked ChatGPT to explain what the retrieval distance means
      low, and which one you'd tighten and to what.
 
      Milestone 3. -->
+     ## Diagnoses
+
+     ### Miss 1: "What is the cost of North Kitchen?" (Failed Runs 1, 2, and 3)
+     Failed Stage: Evaluation / Scoring
+     Mechanism: The retrieval stage successfully fetched `dining_north_kitchen.txt` (best distance 0.3013), and the generation stage produced the factually correct answer across all three runs: `"North Kitchen costs one meal swipe, or $13.00 cash (dining_north_kitchen.txt)."`. The failure occurred during output evaluation in `scorer.py`, which uses a strict substring match (`expects in answer`). Because `QUESTIONS` defined `expects` as `"one meal swipe or $13.00 cash."` (without a comma after "swipe" and with a literal period after "cash"), two string formatting mismatch patterns caused all 3 runs to fail:
+     1. The LLM inserted a comma (`"one meal swipe, or"` vs. `"one meal swipe or"`).
+     2. The LLM appended inline source citations before the period (`"$13.00 cash (dining_north_kitchen.txt)."` vs. `"$13.00 cash."`).
+
+This string formatting mismatch resulted in a false negative across all three runs despite 100% factual accuracy.
+
+     ### Miss 2: "What is the walking time from Library to Ridgeway Café in winter?" (Failed Run 1)
+     Failed Stage: Evaluation / Scoring
+     Mechanism: Retrieval successfully fetched `transit_walking.txt` across all runs (best distance 0.3793). In Run 1, the generation stage synthesized the reasoning step into prose: `"The walking time from the Library to the Ridgeway Café is normally 3 minutes, but you should add four minutes in winter because the path past the pond ices over (transit_walking.txt)."`. The LLM described the math ("3 minutes" plus "four minutes") without writing the single digits `"7 minutes"` as expected by `scorer.py`'s `expects = "7 minutes"`. This caused `expects in answer` to evaluate to `False`. Runs 2 and 3 passed because non-deterministic generation included the exact string `"7 minutes"` in their outputs.
+
+     ### Overall Pattern Across Misses
+     Both misses share a common pattern: they are false negatives caused by fragile string comparison in the evaluation harness rather than failures in the RAG pipeline's retrieval or generation stages. The pipeline successfully retrieved the correct context chunks and generated accurate answers, but `scorer.py` failed to account for minor phrasing variations and punctuation differences.
+
 
 ## The Improvement
 
