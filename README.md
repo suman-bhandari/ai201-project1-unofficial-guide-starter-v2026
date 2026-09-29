@@ -374,9 +374,20 @@ Retrieval distance: I asked ChatGPT to explain what the retrieval distance means
 
      Milestone 5. -->
 
+     While all five evaluation criteria achieved a MET verdict after updating `scorer.py`, a underlying generation issue remains with Question 3 ("What is the walking time from Library to Ridgeway Café in winter?"), which failed across all three re-evaluations:
+
+     The Residual Failure: Retrieval successfully fetched `transit_walking.txt` (distance 0.3793), but the LLM output explicitly states "3 minutes, plus an additional four minutes in winter" rather than summing the numbers into the single string `"7 minutes"` expected by ground truth.
+     What I'd Do About It: Modify the prompt template in `generator.py` to instruct the LLM to explicitly compute total values when answering time/distance questions (e.g., "When a source provides a base time and an additional offset, provide both the breakdown and the calculated total explicitly"), or update the target expectation to accept `"3 minutes"` + `"four minutes"` reasoning chains.
+     Why I Stopped Here: Updating `scorer.py` resolved the evaluation false negatives and brought all five criteria to a MET verdict (4/5 target met across all runs), the system satisfied the overall project criteria.
+
 ## What I'd Do Differently
 
 <!-- Knowing what you know now — which of your five criteria would you write
      differently, and why?
 
      Milestone 5. -->
+
+     Knowing what I know now, I would write Criterion 1 ("Retrieved chunk contains the answer") and its target expectations differently:
+
+     How I'd change it: Instead of requiring `expects` to be an exact, rigid string like `"one meal swipe or $13.00 cash."` or `"7 minutes"`, I would define expected answers using semantic key-fact lists (e.g., `expects_any_of: ["13.00", "13 dollars", "one meal swipe"]` or flexible keyword tuples).
+     Why: Rigid substring evaluation blurs the line between a RAG system failure (retrieving the wrong document or generating incorrect facts) and a harness failure (the LLM inserting a comma or writing numbers as words). Evaluation criteria should measure actual information retrieval and factual accuracy, rather than strict syntax adherence.
